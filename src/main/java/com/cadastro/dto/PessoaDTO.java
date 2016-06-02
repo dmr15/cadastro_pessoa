@@ -1,25 +1,29 @@
-package com.cadastro.entity;
+package com.cadastro.dto;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity
-public class Pessoa {
+@XmlRootElement
+public class PessoaDTO {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	public PessoaDTO() {
+	}
+	
+	public PessoaDTO(Integer id, String nome, Date dataNascimento) {
+		this.id = id;
+		this.nome = nome;
+		this.dataNascimento = dataNascimento;
+	}
+	
+	private Integer id;
 	private String nome;
 	private Date dataNascimento;
 	
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getNome() {
@@ -39,7 +43,7 @@ public class Pessoa {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + id;
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		return result;
 	}
@@ -52,11 +56,8 @@ public class Pessoa {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Pessoa other = (Pessoa) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		PessoaDTO other = (PessoaDTO) obj;
+		if (id != other.id)
 			return false;
 		if (nome == null) {
 			if (other.nome != null)
@@ -70,6 +71,4 @@ public class Pessoa {
 	public String toString() {
 		return "Pessoa [nome=" + nome + "]";
 	}
-	
-	
 }
