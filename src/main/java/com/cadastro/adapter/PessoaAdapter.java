@@ -30,5 +30,18 @@ public class PessoaAdapter {
 		
 		return listaPessoaDTO;
 	}
+	
+	public static Pessoa toPessoa(PessoaDTO pessoaDTO) {
+		Pessoa pessoa = new Pessoa();
+		
+		if(pessoaDTO.getId() != null) {
+			pessoa.setId(pessoaDTO.getId().longValue());
+		}
+		
+		pessoa.setDataNascimento(pessoaDTO.getDataNascimento());
+		pessoa.setNome(pessoaDTO.getNome());
+		
+		return pessoa;
+	}
 
 }

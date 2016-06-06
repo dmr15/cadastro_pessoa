@@ -2,46 +2,60 @@ package com.cadastro.dao;
 
 import java.util.List;
 
+import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import com.cadastro.entity.Pessoa;
+import com.cadastro.factory.BeanFactory;
 
+@Named("pessoaDAO")
 public class PessoaDAOImpl implements PessoaDAO{
 
-	@PersistenceContext(unitName = "cadastroPessoaPersistenceUnit")
 	private EntityManager entityManager;
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Pessoa> listarTodos() {
-		System.out.println("EM>>>>>>>>>>>>>>>> " + entityManager);
-		entityManager.getTransaction().begin();
+		initEntityManager();
 		return entityManager.createQuery("FROM Pessoa p").getResultList();
 	}
 
 	@Override
 	public Pessoa buscarPessoaPorId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		initEntityManager();
+		final Pessoa pessoa = (Pessoa) entityManager.find(Pessoa.class, id); 
+		return pessoa;
 	}
 
 	@Override
 	public void adicionarPessoa(Pessoa pessoa) {
-		// TODO Auto-generated method stub
-		
+		initEntityManager();
+		entityManager.persist(pessoa);
+		entityManager.getTransaction().commit();
 	}
 
 	@Override
 	public void removerPessoa(Pessoa pessoa) {
-		// TODO Auto-generated method stub
-		
+		initEntityManager();
+		if(pessoa.getId() != null) {
+			pessoa = buscarPessoaPorId(pessoa.getId());
+			entityManager.remove(pessoa);
+			entityManager.getTransaction().commit();
+		}
 	}
 
 	@Override
 	public void atualizarPessoa(Pessoa pessoa) {
-		// TODO Auto-generated method stub
 		
+		if(pessoa.getId() != null) {
+			entityManager.merge(pessoa);
+			entityManager.getTransaction().commit();
+		}
+	}
+	
+	public void initEntityManager() {
+		entityManager = BeanFactory.getEntityManager();
+		entityManager.getTransaction().begin();
 	}
 
 }

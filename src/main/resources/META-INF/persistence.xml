@@ -7,7 +7,7 @@
 	version="2.1">
 		
 	<persistence-unit name="cadastroPessoaPersistenceUnit" transaction-type="RESOURCE_LOCAL">
-		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		
 		<class>com.cadastro.entity.Pessoa</class>
 		
